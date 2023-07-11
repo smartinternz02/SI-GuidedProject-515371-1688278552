@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Emotion Detection</title>
+  </head>
+  <body>
+  <h1>Emotion Detection using YOLOV5</h1>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload</button>
+    <div id="output"></div>
+
+    <script>
+      function uploadFile() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.blob())
+          .then((result) => {
+            const imageUrl = URL.createObjectURL(result);
+            const outputDiv = document.getElementById("output");
+            const imageElement = document.createElement("img");
+            imageElement.src = imageUrl;
+            outputDiv.appendChild(imageElement);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
